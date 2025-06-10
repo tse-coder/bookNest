@@ -1,0 +1,161 @@
+-- Create database and tables
+DROP DATABASE IF EXISTS library_db;
+CREATE DATABASE IF NOT EXISTS library_db;
+USE library_db;
+
+-- Users table (with password)
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);
+
+-- Books table
+CREATE TABLE IF NOT EXISTS books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    author VARCHAR(100) NOT NULL,
+    genre VARCHAR(50),
+    year INT,
+    copiesAvailable INT DEFAULT 1
+);
+
+-- Borrowed books table
+CREATE TABLE IF NOT EXISTS borrowed_books (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    book_id INT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+);
+
+-- Populate users
+INSERT INTO users (name, email, password) VALUES
+('Ezra ayalew', 'ezra@example.com', 'ezra123'),
+('Tsegaye shewamare', 'tsegaye@example.com', 'tsegaye123'),
+('Adonias Abiot', 'adonias@example.com', 'adonias123'),
+('natan', 'natan@example.com', 'natan123'),
+('sawel', 'sawel@example.com', 'sawel123');
+
+-- Populate books (many entries)
+INSERT INTO books (title, author, genre, year, copiesAvailable) VALUES
+('The Great Gatsby', 'F. Scott Fitzgerald', 'Fiction', 1925, 4),
+('To Kill a Mockingbird', 'Harper Lee', 'Fiction', 1960, 2),
+('1984', 'George Orwell', 'Dystopian', 1949, 5),
+('The Art of Computer Programming', 'Donald Knuth', 'Computer Sci', 1968, 1),
+('Clean Code', 'Robert C. Martin', 'Programming', 2008, 3),
+('Sapiens: A Brief History of Humankind', 'Yuval Noah Harari', 'History', 2011, 4),
+('The Pragmatic Programmer', 'Andrew Hunt, David Thomas', 'Programming', 1999, 3),
+('Thinking, Fast and Slow', 'Daniel Kahneman', 'Psychology', 2011, 2),
+('The Catcher in the Rye', 'J.D. Salinger', 'Fiction', 1951, 5),
+('A Brief History of Time', 'Stephen Hawking', 'Science', 1988, 2),
+('The Lean Startup', 'Eric Ries', 'Business', 2011, 3),
+('Atomic Habits', 'James Clear', 'Self-help', 2018, 4),
+('The Hobbit', 'J.R.R. Tolkien', 'Fantasy', 1937, 5),
+('The Road', 'Cormac McCarthy', 'Dystopian', 2006, 2),
+('Educated', 'Tara Westover', 'Memoir', 2018, 3),
+('Brave New World', 'Aldous Huxley', 'Dystopian', 1932, 3),
+('The Alchemist', 'Paulo Coelho', 'Fiction', 1988, 4),
+('The Power of Habit', 'Charles Duhigg', 'Self-help', 2012, 3),
+('Deep Work', 'Cal Newport', 'Productivity', 2016, 2),
+('Zero to One', 'Peter Thiel', 'Business', 2014, 2),
+('The Subtle Art of Not Giving a F*ck', 'Mark Manson', 'Self-help', 2016, 4),
+('The Design of Everyday Things', 'Don Norman', 'Design', 1988, 2),
+('Grit', 'Angela Duckworth', 'Psychology', 2016, 2),
+('The Shining', 'Stephen King', 'Horror', 1977, 3),
+('Dune', 'Frank Herbert', 'Science Fiction', 1965, 4),
+('The Fellowship of the Ring', 'J.R.R. Tolkien', 'Fantasy', 1954, 3),
+('The Two Towers', 'J.R.R. Tolkien', 'Fantasy', 1954, 3),
+('The Return of the King', 'J.R.R. Tolkien', 'Fantasy', 1955, 3),
+('Harry Potter and the Sorcerer''s Stone', 'J.K. Rowling', 'Fantasy', 1997, 5),
+('Harry Potter and the Chamber of Secrets', 'J.K. Rowling', 'Fantasy', 1998, 5),
+('Harry Potter and the Prisoner of Azkaban', 'J.K. Rowling', 'Fantasy', 1999, 5),
+('Harry Potter and the Goblet of Fire', 'J.K. Rowling', 'Fantasy', 2000, 5),
+('Harry Potter and the Order of the Phoenix', 'J.K. Rowling', 'Fantasy', 2003, 5),
+('Harry Potter and the Half-Blood Prince', 'J.K. Rowling', 'Fantasy', 2005, 5),
+('Harry Potter and the Deathly Hallows', 'J.K. Rowling', 'Fantasy', 2007, 5),
+('The Da Vinci Code', 'Dan Brown', 'Thriller', 2003, 3),
+('Angels & Demons', 'Dan Brown', 'Thriller', 2000, 3),
+('Inferno', 'Dan Brown', 'Thriller', 2013, 3),
+('Origin', 'Dan Brown', 'Thriller', 2017, 3),
+('Digital Fortress', 'Dan Brown', 'Thriller', 1998, 2),
+('Deception Point', 'Dan Brown', 'Thriller', 2001, 2),
+('The Girl with the Dragon Tattoo', 'Stieg Larsson', 'Mystery', 2005, 3),
+('The Girl Who Played with Fire', 'Stieg Larsson', 'Mystery', 2006, 3),
+('The Girl Who Kicked the Hornet''s Nest', 'Stieg Larsson', 'Mystery', 2007, 3),
+('Gone Girl', 'Gillian Flynn', 'Thriller', 2012, 3),
+('The Fault in Our Stars', 'John Green', 'Young Adult', 2012, 4),
+('Looking for Alaska', 'John Green', 'Young Adult', 2005, 3),
+('Paper Towns', 'John Green', 'Young Adult', 2008, 3),
+('An Abundance of Katherines', 'John Green', 'Young Adult', 2006, 2),
+('Norwegian Wood', 'Haruki Murakami', 'Fiction', 1987, 2),
+('Kafka on the Shore', 'Haruki Murakami', 'Fiction', 2002, 2),
+('1Q84', 'Haruki Murakami', 'Fiction', 2009, 2),
+('The Wind-Up Bird Chronicle', 'Haruki Murakami', 'Fiction', 1994, 2),
+('Crime and Punishment', 'Fyodor Dostoevsky', 'Classic', 1866, 2),
+('The Brothers Karamazov', 'Fyodor Dostoevsky', 'Classic', 1880, 2),
+('War and Peace', 'Leo Tolstoy', 'Classic', 1869, 2),
+('Anna Karenina', 'Leo Tolstoy', 'Classic', 1877, 2),
+('Pride and Prejudice', 'Jane Austen', 'Classic', 1813, 2),
+('Sense and Sensibility', 'Jane Austen', 'Classic', 1811, 2),
+('Emma', 'Jane Austen', 'Classic', 1815, 2),
+('Moby-Dick', 'Herman Melville', 'Classic', 1851, 2),
+('The Odyssey', 'Homer', 'Epic', -800, 2),
+('The Iliad', 'Homer', 'Epic', -750, 2),
+('Don Quixote', 'Miguel de Cervantes', 'Classic', 1605, 2),
+('Ulysses', 'James Joyce', 'Classic', 1922, 2),
+('The Divine Comedy', 'Dante Alighieri', 'Classic', 1320, 2),
+('The Picture of Dorian Gray', 'Oscar Wilde', 'Classic', 1890, 2),
+('Dracula', 'Bram Stoker', 'Horror', 1897, 2),
+('Frankenstein', 'Mary Shelley', 'Horror', 1818, 2),
+('The Sun Also Rises', 'Ernest Hemingway', 'Fiction', 1926, 2),
+('A Farewell to Arms', 'Ernest Hemingway', 'Fiction', 1929, 2),
+('For Whom the Bell Tolls', 'Ernest Hemingway', 'Fiction', 1940, 2),
+('The Old Man and the Sea', 'Ernest Hemingway', 'Fiction', 1952, 2),
+('Slaughterhouse-Five', 'Kurt Vonnegut', 'Fiction', 1969, 2),
+('Cat''s Cradle', 'Kurt Vonnegut', 'Fiction', 1963, 2),
+('Breakfast of Champions', 'Kurt Vonnegut', 'Fiction', 1973, 2),
+('Fahrenheit 451', 'Ray Bradbury', 'Dystopian', 1953, 2),
+('The Martian', 'Andy Weir', 'Science Fiction', 2011, 2),
+('Ready Player One', 'Ernest Cline', 'Science Fiction', 2011, 2),
+('Ender''s Game', 'Orson Scott Card', 'Science Fiction', 1985, 2),
+('The Handmaid''s Tale', 'Margaret Atwood', 'Dystopian', 1985, 2),
+('Life of Pi', 'Yann Martel', 'Fiction', 2001, 2),
+('Memoirs of a Geisha', 'Arthur Golden', 'Historical Fiction', 1997, 2),
+('The Kite Runner', 'Khaled Hosseini', 'Fiction', 2003, 2),
+('A Thousand Splendid Suns', 'Khaled Hosseini', 'Fiction', 2007, 2),
+('The Book Thief', 'Markus Zusak', 'Historical Fiction', 2005, 2),
+('The Help', 'Kathryn Stockett', 'Fiction', 2009, 2),
+('The Giver', 'Lois Lowry', 'Young Adult', 1993, 2),
+('The Outsiders', 'S.E. Hinton', 'Young Adult', 1967, 2),
+('Charlotte''s Web', 'E.B. White', 'Children', 1952, 2),
+('Matilda', 'Roald Dahl', 'Children', 1988, 2),
+('The Very Hungry Caterpillar', 'Eric Carle', 'Children', 1969, 2),
+('Where the Wild Things Are', 'Maurice Sendak', 'Children', 1963, 2),
+('Goodnight Moon', 'Margaret Wise Brown', 'Children', 1947, 2),
+('The Giving Tree', 'Shel Silverstein', 'Children', 1964, 2),
+('Green Eggs and Ham', 'Dr. Seuss', 'Children', 1960, 2),
+('Oh, the Places You''ll Go!', 'Dr. Seuss', 'Children', 1990, 2),
+('The Cat in the Hat', 'Dr. Seuss', 'Children', 1957, 2),
+('The Lorax', 'Dr. Seuss', 'Children', 1971, 2),
+('The Little Prince', 'Antoine de Saint-Exupéry', 'Children', 1943, 2),
+('Winnie-the-Pooh', 'A.A. Milne', 'Children', 1926, 2),
+('Pippi Longstocking', 'Astrid Lindgren', 'Children', 1945, 2),
+('Anne of Green Gables', 'L.M. Montgomery', 'Children', 1908, 2),
+('Heidi', 'Johanna Spyri', 'Children', 1881, 2),
+('Treasure Island', 'Robert Louis Stevenson', 'Adventure', 1883, 2),
+('Robinson Crusoe', 'Daniel Defoe', 'Adventure', 1719, 2),
+('The Call of the Wild', 'Jack London', 'Adventure', 1903, 2),
+('White Fang', 'Jack London', 'Adventure', 1906, 2),
+('Journey to the Center of the Earth', 'Jules Verne', 'Science Fiction', 1864, 2),
+('Twenty Thousand Leagues Under the Seas', 'Jules Verne', 'Science Fiction', 1870, 2),
+('Around the World in Eighty Days', 'Jules Verne', 'Adventure', 1873, 2),
+('The Time Machine', 'H.G. Wells', 'Science Fiction', 1895, 2),
+('The War of the Worlds', 'H.G. Wells', 'Science Fiction', 1898, 2),
+('The Invisible Man', 'H.G. Wells', 'Science Fiction', 1897, 2),
+('The Island of Doctor Moreau', 'H.G. Wells', 'Science Fiction', 1896, 2);
+
+-- Optionally, you can add more borrowed_books entries for testing
+-- Example:
+-- INSERT INTO borrowed_books (user_id, book_id) VALUES (1, 3), (2, 5), (3, 1);
