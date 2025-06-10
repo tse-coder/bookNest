@@ -41,6 +41,40 @@ The project is organized into the following packages:
    - Compile the project using your preferred IDE or command line.
    - Run the `App.java` files in the `bookNest.client` and `bookNest.admin` packages.
 
+## Running the Project Locally
+
+To run the Library Management System locally, follow these steps:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/tse-coder/bookNest.git
+   cd bookNest
+   ```
+
+2. **Set Up the Database**:
+   - Ensure MySQL is installed and running.
+   - Import the `sampleData.sql` file into your MySQL database.
+     ```bash
+     mysql -u <username> -p <database_name> < src/bookNest/database/sampleData.sql
+     ```
+   - Update the database connection details in `src/bookNest/database/DatabaseUtil.java`.
+
+3. **Compile the Project**:
+   - Use your preferred IDE or the command line to compile the project.
+     ```bash
+     javac -cp lib/mysql-connector-java-9.3.0.jar src/bookNest/**/*.java
+     ```
+
+4. **Run the Applications**:
+   - Run the Client App:
+     ```bash
+     java -cp lib/mysql-connector-java-9.3.0.jar:src bookNest.client.App
+     ```
+   - Run the Admin App:
+     ```bash
+     java -cp lib/mysql-connector-java-9.3.0.jar:src bookNest.admin.App
+     ```
+
 ## Technologies Used
 - Java
 - MySQL
