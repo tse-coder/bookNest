@@ -157,4 +157,36 @@ public class Book {
             return false;
         }
     }
+
+    // Add a method to remove a book from the database
+    public static boolean removeBookFromDB(int bookId) {
+        String sql = "DELETE FROM books WHERE id = ?";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, bookId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Add a method to update book information in the database
+    public static boolean updateBookInDB(int bookId, String title, String author, String genre, int year, int copiesAvailable) {
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement("UPDATE books SET title = ?, author = ?, genre = ?, year = ?, copiesAvailable = ? WHERE id = ?")) {
+            stmt.setString(1, title);
+            stmt.setString(2, author);
+            stmt.setString(3, genre);
+            stmt.setInt(4, year);
+            stmt.setInt(5, copiesAvailable);
+            stmt.setInt(6, bookId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

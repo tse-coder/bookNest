@@ -68,6 +68,24 @@ public class BooksPage extends JPanel {
         topPanel.add(searchField);
         topPanel.add(addBookBtn);
 
+        // Remove Book button
+        JButton removeBookBtn = new JButton("Remove Book");
+        removeBookBtn.setBackground(Color.RED);
+        removeBookBtn.setForeground(Color.WHITE);
+        removeBookBtn.setFocusPainted(false);
+        removeBookBtn.setFont(new Font("SansSerif", Font.BOLD, 12));
+        removeBookBtn.setPreferredSize(new Dimension(120, 30));
+        topPanel.add(removeBookBtn);
+
+        // Update Book button
+        JButton updateBookBtn = new JButton("Update Book");
+        updateBookBtn.setBackground(Color.ORANGE);
+        updateBookBtn.setForeground(Color.WHITE);
+        updateBookBtn.setFocusPainted(false);
+        updateBookBtn.setFont(new Font("SansSerif", Font.BOLD, 12));
+        updateBookBtn.setPreferredSize(new Dimension(120, 30));
+        topPanel.add(updateBookBtn);
+
         searchField.getDocument().addDocumentListener(new DocumentListener() {
             public void insertUpdate(DocumentEvent e) { filterBooks(searchField.getText()); }
             public void removeUpdate(DocumentEvent e) { filterBooks(searchField.getText()); }
@@ -75,6 +93,8 @@ public class BooksPage extends JPanel {
         });
 
         addBookBtn.addActionListener(e -> showAddBookDialog());
+        removeBookBtn.addActionListener(e -> removeSelectedBook());
+        updateBookBtn.addActionListener(e -> updateSelectedBook());
 
         // Info Panel
         JPanel infoPanel = new JPanel(new GridLayout(6, 2, 5, 5));
@@ -180,6 +200,72 @@ public class BooksPage extends JPanel {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Invalid input. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    // Add a remove book functionality
+    private void removeSelectedBook() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            int bookId = (int) model.getValueAt(selectedRow, 0);
+            boolean success = Book.removeBookFromDB(bookId);
+            if (success) {
+                updateTableRows(Book.getAllBooksFromDB());
+                JOptionPane.showMessageDialog(this, "Book removed successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to remove book.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No book selected.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    // Add a method to update the information of a selected book
+    private void updateSelectedBook() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            int bookId = (int) model.getValueAt(selectedRow, 0);
+            String currentTitle = (String) model.getValueAt(selectedRow, 1);
+            String currentAuthor = (String) model.getValueAt(selectedRow, 2);
+            String currentGenre = (String) model.getValueAt(selectedRow, 3);
+            int currentYear = (int) model.getValueAt(selectedRow, 4);
+            int currentCopies = (int) model.getValueAt(selectedRow, 5);
+
+            JTextField titleField = new JTextField(currentTitle);
+            JTextField authorField = new JTextField(currentAuthor);
+            JTextField genreField = new JTextField(currentGenre);
+            JTextField yearField = new JTextField(String.valueOf(currentYear));
+            JTextField copiesField = new JTextField(String.valueOf(currentCopies));
+
+            JPanel panel = new JPanel(new GridLayout(5, 2, 5, 5));
+            panel.add(new JLabel("Title:")); panel.add(titleField);
+            panel.add(new JLabel("Author:")); panel.add(authorField);
+            panel.add(new JLabel("Genre:")); panel.add(genreField);
+            panel.add(new JLabel("Year:")); panel.add(yearField);
+            panel.add(new JLabel("Copies:")); panel.add(copiesField);
+
+            int result = JOptionPane.showConfirmDialog(this, panel, "Update Book Info", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    String newTitle = titleField.getText().trim();
+                    String newAuthor = authorField.getText().trim();
+                    String newGenre = genreField.getText().trim();
+                    int newYear = Integer.parseInt(yearField.getText().trim());
+                    int newCopies = Integer.parseInt(copiesField.getText().trim());
+
+                    boolean success = Book.updateBookInDB(bookId, newTitle, newAuthor, newGenre, newYear, newCopies);
+                    if (success) {
+                        updateTableRows(Book.getAllBooksFromDB());
+                        JOptionPane.showMessageDialog(this, "Book updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Failed to update book.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Invalid input. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "No book selected.", "Warning", JOptionPane.WARNING_MESSAGE);
         }
     }
 }

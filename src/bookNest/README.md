@@ -83,7 +83,7 @@ To run the Library Management System locally, follow these steps:
 ## Authors
 Developed by:
 
-| Name               | Role         |
+| Name               | ID           |
 |--------------------|--------------|
 | Adonias Abiyot     | UGR/0796/15  |
 | Ezra Ayalew        | UGR/9077/16  |

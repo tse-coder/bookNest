@@ -53,7 +53,9 @@ public class App extends JFrame {
         navigation.add(titleLabel);
 
         // Create and style navigation buttons
-        booksBtn = createSidebarButton("All");
+        booksBtn = createSidebarButton("All books");
+        booksBtn.setBackground(Color.white);
+        booksBtn.setForeground(Color.black);
         borrowedBooksBtn = createSidebarButton("Borrowed");
 
         // Add navigation buttons to the navigation panel

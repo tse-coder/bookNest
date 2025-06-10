@@ -8,8 +8,8 @@ import bookNest.admin.components.UsersPage;
 
 
 public class App extends JFrame {
-    JPanel navigation, page, usersPage, booksPage, statsPage,topBar;
-    JButton usersBtn, booksBtn, statsBtn;
+    JPanel navigation, page, usersPage, booksPage, topBar;
+    JButton usersBtn, booksBtn;
     JLabel bookEmojiLabel,titleLabel;
     
     // Represents the main admin application window
@@ -94,7 +94,6 @@ public class App extends JFrame {
             usersBtn.setBackground(Color.black);
             usersBtn.setForeground(Color.white);
         });
-
 
         add(navigation, BorderLayout.WEST);
         add(page, BorderLayout.CENTER);
